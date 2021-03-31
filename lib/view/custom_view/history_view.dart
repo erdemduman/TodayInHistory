@@ -21,7 +21,7 @@ class HistoryView extends StatelessWidget {
                 return Container(
                   height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
-                    color: snapshot.data?.withOpacity(0.25),
+                    color: snapshot.data?.withOpacity(0.08),
                   ),
                   child: HistoryViewBody(historyState: historyState),
                 );
