@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_th/logic/bloc/main_page_bloc.dart';
 import 'package:project_th/view/bloc_provider.dart';
 import 'package:project_th/view/custom_view/app_bar_tab_view.dart';
+import 'package:project_th/view/custom_view/loading_view.dart';
 import 'package:project_th/view/custom_view/tab_bar_body_view.dart';
 
 class MainPage extends StatefulWidget {
@@ -46,11 +47,24 @@ class _MainPageBodyState extends State<MainPageBody>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: AppBarTabView(controller: _controller),
-          body: TabBarBodyView(controller: _controller),
-        ));
+    return StreamBuilder<bool>(
+        stream: _bloc?.loadingStream,
+        builder: (context, snapshot) {
+          return Stack(
+            children: [
+              DefaultTabController(
+                  length: 3,
+                  child: Scaffold(
+                    appBar: AppBarTabView(controller: _controller),
+                    body: TabBarBodyView(controller: _controller),
+                  )),
+              Visibility(
+                  child: Scaffold(
+                      body: LoadingView(loadingText: "Please Wait"),
+                      backgroundColor: Colors.black.withOpacity(0.8)),
+                  visible: snapshot.data == true)
+            ],
+          );
+        });
   }
 }

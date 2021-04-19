@@ -25,6 +25,7 @@ class MainPageBloc extends BaseBloc
   final _getDeathController = BehaviorSubject<DeathItem?>();
   final _themeColorController = BehaviorSubject<Color?>();
   final _calendarController = BehaviorSubject<Calendar?>();
+  final _loadingController = BehaviorSubject<bool>.seeded(false);
 
   TaskFlow? _taskFlow;
   EventItem? _events;
@@ -38,6 +39,7 @@ class MainPageBloc extends BaseBloc
   Stream<DeathItem?> get getDeathStream => _getDeathController.stream;
   Stream<Color?> get themeColorStream => _themeColorController.stream;
   Stream<Calendar?> get calendarStream => _calendarController.stream;
+  Stream<bool> get loadingStream => _loadingController.stream;
 
   @override
   void init([BaseBlocParameter? parameter]) {
@@ -54,7 +56,7 @@ class MainPageBloc extends BaseBloc
       _sinkHistory();
       _calendarController.sink.add(_calendar);
     } else
-      setDate(_calendar!);
+      _setDate(_calendar!);
   }
 
   void setTab(int? tabNumber) {
@@ -65,7 +67,15 @@ class MainPageBloc extends BaseBloc
     else if (tabNumber == 2) _themeColorController.sink.add(Colors.red[900]);
   }
 
-  void setDate(Calendar calendar) {
+  void changeDate(int month, int day) {
+    routeService.goBack();
+    _loadingController.sink.add(true);
+    _setDate(Calendar()
+      ..month = month
+      ..day = day);
+  }
+
+  void _setDate(Calendar calendar) {
     _calendar?.month = calendar.month;
     _calendar?.day = calendar.day;
     _calendarController.sink.add(_calendar);
@@ -138,6 +148,7 @@ class MainPageBloc extends BaseBloc
     _getEventController.sink.add(_events);
     _getBirthController.sink.add(_births);
     _getDeathController.sink.add(_deaths);
+    _loadingController.sink.add(false);
   }
 
   @override
@@ -147,6 +158,7 @@ class MainPageBloc extends BaseBloc
     _getDeathController.close();
     _themeColorController.close();
     _calendarController.close();
+    _loadingController.close();
   }
 }
 

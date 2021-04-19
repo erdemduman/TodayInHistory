@@ -12,22 +12,16 @@ class HistoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MainPageBloc? bloc = BlocProvider.of<MainPageBloc>(context);
-    return Container(
-      child: Stack(
-        children: [
-          StreamBuilder<Color?>(
-              stream: bloc?.themeColorStream,
-              builder: (context, snapshot) {
-                return Container(
-                  height: MediaQuery.of(context).size.height,
-                  decoration: BoxDecoration(
-                    color: snapshot.data?.withOpacity(0.08),
-                  ),
-                  child: HistoryViewBody(historyState: historyState),
-                );
-              })
-        ],
-      ),
-    );
+    return StreamBuilder<Color?>(
+        stream: bloc?.themeColorStream,
+        builder: (context, snapshot) {
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              color: snapshot.data?.withOpacity(0.08),
+            ),
+            child: HistoryViewBody(historyState: historyState),
+          );
+        });
   }
 }
