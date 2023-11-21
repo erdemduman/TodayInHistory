@@ -6,4 +6,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chooseDate => 'Choose a date';
+
+  @override
+  String get events => 'Events';
+
+  @override
+  String get births => 'Births';
+
+  @override
+  String get deaths => 'Deaths';
 }

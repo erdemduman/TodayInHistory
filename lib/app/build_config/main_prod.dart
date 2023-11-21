@@ -6,7 +6,8 @@ import '../app_executer.dart';
 class ProdBuild implements BuildConfig {
   @override
   final Map<String, String> config = {
-    'version_name': 'prod',
+    AppConstants.baseUrl: 'https://byabbe.se/on-this-day',
+    AppConstants.versionName: 'prod',
   };
 }
 

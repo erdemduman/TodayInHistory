@@ -1,5 +1,5 @@
 class Routes {
-  static const String main = '/dashboard';
+  static const String timeline = '/dashboard';
 }
 
 class Modules {

@@ -1,3 +1,6 @@
 {
-    "chooseDate": "Choose a date"
+    "chooseDate": "Choose a date",
+    "events": "Events",
+    "births": "Births",
+    "deaths": "Deaths"
 }

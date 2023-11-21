@@ -8,18 +8,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SharedBlocProvider(
-      child: const MaterialApp(
+      child: MaterialApp(
         title: 'Today in History',
-        initialRoute: Routes.main,
+        initialRoute: Routes.timeline,
         onGenerateRoute: AppRouter.generateRoute,
+        theme: ThemeData.dark(),
         debugShowCheckedModeBanner: false,
-        localizationsDelegates: [
+        localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: [Locale('en')],
+        supportedLocales: const [Locale('en')],
       ),
     );
   }

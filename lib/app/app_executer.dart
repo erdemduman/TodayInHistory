@@ -10,9 +10,11 @@ class AppExecuter {
   const AppExecuter({required this.buildConfig});
 
   void execute() async {
+    WidgetsFlutterBinding.ensureInitialized();
+
     InitDependencyInjection.init(buildConfig);
 
-    WidgetsFlutterBinding.ensureInitialized();
+    await Hive.initFlutter();
 
     runApp(const MyApp());
   }

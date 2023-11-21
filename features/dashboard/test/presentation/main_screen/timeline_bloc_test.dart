@@ -1,23 +1,23 @@
 import 'package:core/core.dart';
-import 'package:dashboard/src/presentation/screens/main_screen/bloc/main_bloc.dart';
-import 'package:dashboard/src/presentation/screens/main_screen/bloc/main_state.dart';
+import 'package:dashboard/src/presentation/screens/timeline_screen/bloc/timeline_bloc.dart';
+import 'package:dashboard/src/presentation/screens/timeline_screen/bloc/timeline_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockLogger extends Mock implements Logger {}
 
 void main() {
-  group('MainBloc', () {
+  group('TimelineBloc', () {
     late MockLogger mockLogger;
-    late MainBloc bloc;
+    late TimelineBloc bloc;
 
     setUp(() {
       mockLogger = MockLogger();
-      bloc = MainBloc(mockLogger);
+      bloc = TimelineBloc(mockLogger);
     });
 
     test('Initial state is correct', () {
-      expect(bloc.state, MainState.create());
+      expect(bloc.state, TimelineState.create());
     });
 
     test('Init', () {
@@ -37,22 +37,22 @@ void main() {
     });
   });
 
-  group('MainState', () {
+  group('TimelineState', () {
     test('copyWith', () {
-      final initialState = MainState.create();
+      final initialState = TimelineState.create();
 
       // Test with new status
-      final newState = initialState.copyWith(status: MainStatus.initial);
-      expect(newState.status, MainStatus.initial);
+      final newState = initialState.copyWith(status: TimelineStatus.initial);
+      expect(newState.status, TimelineStatus.initial);
 
       // Test without changing status
       final sameState = initialState.copyWith();
-      expect(sameState.status, MainStatus.initial);
+      expect(sameState.status, TimelineStatus.initial);
     });
 
     test('props', () {
-      final initialState = MainState.create();
-      expect(initialState.props, [MainStatus.initial]);
+      final initialState = TimelineState.create();
+      expect(initialState.props, [TimelineStatus.initial]);
     });
   });
 }

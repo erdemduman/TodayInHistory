@@ -96,6 +96,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose a date'**
   String get chooseDate;
+
+  /// No description provided for @events.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get events;
+
+  /// No description provided for @births.
+  ///
+  /// In en, this message translates to:
+  /// **'Births'**
+  String get births;
+
+  /// No description provided for @deaths.
+  ///
+  /// In en, this message translates to:
+  /// **'Deaths'**
+  String get deaths;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
