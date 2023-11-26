@@ -1,16 +1,16 @@
-# today_in_history
+# Today in History
 
-A new Flutter project.
+A cross platform mobile application that displays historical events that took place on the current day.
 
-## Getting Started
+Clean architecture with multiple modules is used in order to implement this application. See the URL of the architecture down below:
 
-This project is a starting point for a Flutter application.
+[Flutter-Clean-Arch](https://github.com/erdemduman/Flutter-Clean-Arch)
 
-A few resources to get you started if this is your first Flutter project:
+### Planned Features
+- Date Selection: Allow users to explore historical events from specific dates.
+- Local Storage: Save the current day locally for quicker access.
+- Notifications: Receive random historical event notifications daily.
+- Language Support: Explore events in multiple languages (if possible).
+- Widget Integration: Support for widgets on your device (if possible).
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Data source: https://byabbe.se/on-this-day/
