@@ -2,6 +2,12 @@
 
 A cross platform mobile application that displays historical events that took place on the current day.
 
+<p float="left">
+  <img src="gifs/part1.gif" width="250" height="500"/>
+  <img src="gifs/part2.gif" width="250" height="500"/>
+  <img src="gifs/part3.gif" width="250" height="500"/>
+</p>
+
 Clean architecture with multiple modules is used in order to implement this application. See the URL of the architecture down below:
 
 [Flutter-Clean-Arch](https://github.com/erdemduman/Flutter-Clean-Arch)
