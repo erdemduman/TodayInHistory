@@ -114,6 +114,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deaths'**
   String get deaths;
+
+  /// No description provided for @months.
+  ///
+  /// In en, this message translates to:
+  /// **'{month, select, january {January} february {February} march {March} april {April} may {May} june {June} july {July} august {August} september {September} october {October} november {November} december {December} other {January}}'**
+  String months(String month);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

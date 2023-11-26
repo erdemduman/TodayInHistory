@@ -37,7 +37,7 @@ class TimelineScreenBody extends StatefulWidget {
 
 class _TimelineScreenBodyState extends State<TimelineScreenBody> {
   TimelineBloc? _bloc;
-  ScrollController? _scrollController;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
@@ -56,57 +56,78 @@ class _TimelineScreenBodyState extends State<TimelineScreenBody> {
           previous.status != current.status ||
           previous.items != current.items ||
           previous.hideBottomNavigationView != current.hideBottomNavigationView,
-      builder: (context, state) => Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: _getBackgroundColor(selectedTab: state.selectedTab),
-        ),
-        backgroundColor: _getBackgroundColor(
-          selectedTab: state.selectedTab,
-          isBody: true,
-        ),
-        body: Shimmer(
-          linearGradient: Styles.shimmerGradient,
-          child: Builder(builder: (context) {
-            var itemCount = state.status == TimelineStatus.loading
-                ? 50
-                : state.items[state.selectedTab].body.length;
-            return Stack(
-              children: [
-                ListView.builder(
-                  controller: _scrollController,
-                  physics: state.status == TimelineStatus.loading
-                      ? const NeverScrollableScrollPhysics()
-                      : null,
-                  itemCount: itemCount,
-                  shrinkWrap: true,
-                  itemBuilder: ((context, index) => state.status !=
-                          TimelineStatus.loading
-                      ? TimelineCard(
-                          index: index,
-                          listSize: itemCount,
-                          year: state.items[state.selectedTab].body[index].year,
-                          description: state
-                              .items[state.selectedTab].body[index].description,
-                        )
-                      : ShimmerLoading(
-                          isLoading: true,
-                          child: TimelineShimmerCard(
-                            index: index,
-                            listSize: itemCount,
-                          ),
-                        )),
-                ),
-                AnimatedSize(
-                  curve: Curves.easeInQuad,
-                  duration: const Duration(milliseconds: 600),
-                  child: Visibility(
-                    visible: !state.hideBottomNavigationView,
+      builder: (context, state) => SafeArea(
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: HistoryAppBar(
+            day: state.day,
+            month: context.strId.months(state.monthKey),
+            backgroundColor: Styles.themeColor(
+              selectedTab: state.selectedTab,
+              componentType: ComponentType.bar,
+            ),
+            buttonColor: Styles.themeColor(
+              selectedTab: state.selectedTab,
+              componentType: ComponentType.button,
+            ),
+            height: !state.hideBottomNavigationView ? Styles.appBarHeight : 0,
+            onTap: () {},
+          ),
+          backgroundColor: Styles.themeColor(
+            selectedTab: state.selectedTab,
+            componentType: ComponentType.background,
+          ),
+          body: Shimmer(
+            linearGradient: Styles.shimmerGradient,
+            child: Builder(builder: (context) {
+              var itemCount = state.status == TimelineStatus.loading
+                  ? 50
+                  : state.items[state.selectedTab].body.length;
+              return Stack(
+                children: [
+                  ListView.builder(
+                    controller: _scrollController,
+                    physics: state.status == TimelineStatus.loading
+                        ? const NeverScrollableScrollPhysics()
+                        : null,
+                    itemCount: itemCount,
+                    shrinkWrap: true,
+                    itemBuilder: ((context, index) =>
+                        state.status != TimelineStatus.loading
+                            ? TimelineCard(
+                                index: index,
+                                listSize: itemCount,
+                                year: state
+                                    .items[state.selectedTab].body[index].year,
+                                description: state.items[state.selectedTab]
+                                    .body[index].description,
+                              )
+                            : ShimmerLoading(
+                                isLoading: true,
+                                child: TimelineShimmerCard(
+                                  index: index,
+                                  listSize: itemCount,
+                                ),
+                              )),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
                     child: BottomNavigationView(
-                      backgroundColor:
-                          _getBackgroundColor(selectedTab: state.selectedTab),
+                      height: !state.hideBottomNavigationView
+                          ? Styles.bottomNavigationViewHeight
+                          : 0,
+                      width: Styles.bottomNavigationViewWidth,
+                      backgroundColor: Styles.themeColor(
+                        selectedTab: state.selectedTab,
+                        componentType: ComponentType.bar,
+                      ),
                       onItemSelected: (index) {
                         _bloc?.add(OnTapBottomBarEvent(index: index));
+                        _scrollController.animateTo(
+                          0,
+                          duration: Styles.animationDuration,
+                          curve: Curves.linearToEaseOut,
+                        );
                       },
                       selectedIndex: state.selectedTab,
                       items: [
@@ -125,39 +146,31 @@ class _TimelineScreenBodyState extends State<TimelineScreenBody> {
                       ],
                     ),
                   ),
-                ),
-              ],
-            );
-          }),
+                ],
+              );
+            }),
+          ),
         ),
       ),
     );
   }
 
-  Color _getBackgroundColor({required int selectedTab, bool isBody = false}) {
-    switch (selectedTab) {
-      case 0:
-        return const Color.fromARGB(255, 13, 71, 161)
-            .withOpacity(isBody ? 0.1 : 0.5);
-      case 1:
-        return const Color.fromARGB(255, 25, 88, 29)
-            .withOpacity(isBody ? 0.1 : 0.5);
-      case 2:
-        return const Color.fromARGB(255, 183, 28, 28)
-            .withOpacity(isBody ? 0.1 : 0.5);
-      default:
-        return const Color.fromARGB(255, 183, 28, 28)
-            .withOpacity(isBody ? 0.1 : 0.5);
+  void _scrollListener() {
+    final isScrollingReverse = _scrollController.position.userScrollDirection ==
+        ScrollDirection.reverse;
+    final isScrollingForward = _scrollController.position.userScrollDirection ==
+        ScrollDirection.forward;
+
+    if (isScrollingReverse) {
+      _bloc?.add(const OnScrollEvent(scrollForward: false));
+    } else if (isScrollingForward) {
+      _bloc?.add(const OnScrollEvent(scrollForward: true));
     }
   }
 
-  void _scrollListener() {
-    if (_scrollController?.position.userScrollDirection ==
-        ScrollDirection.reverse) {
-      _bloc?.add(const OnScrollEvent(scrollForward: false));
-    } else if (_scrollController?.position.userScrollDirection ==
-        ScrollDirection.forward) {
-      _bloc?.add(const OnScrollEvent(scrollForward: true));
-    }
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }

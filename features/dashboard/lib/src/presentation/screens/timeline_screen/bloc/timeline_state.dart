@@ -3,12 +3,16 @@ import 'package:dashboard/src/domain/entity/history_entity.dart';
 
 class TimelineState extends BaseState {
   final int selectedTab;
+  final String day;
+  final String monthKey;
   final bool hideBottomNavigationView;
   final List<HistoryEntity> items;
   final TimelineStatus status;
 
   const TimelineState._({
     required this.selectedTab,
+    required this.day,
+    required this.monthKey,
     required this.hideBottomNavigationView,
     required this.items,
     required this.status,
@@ -16,12 +20,16 @@ class TimelineState extends BaseState {
 
   TimelineState copyWith({
     int? selectedTab,
+    String? day,
+    String? monthKey,
     bool? hideBottomNavigationView,
     List<HistoryEntity>? items,
     TimelineStatus? status,
   }) {
     return TimelineState._(
       selectedTab: selectedTab ?? this.selectedTab,
+      day: day ?? this.day,
+      monthKey: monthKey ?? this.monthKey,
       hideBottomNavigationView:
           hideBottomNavigationView ?? this.hideBottomNavigationView,
       items: items ?? this.items,
@@ -32,15 +40,19 @@ class TimelineState extends BaseState {
   @override
   List<Object?> get props => [
         selectedTab,
+        day,
+        monthKey,
         hideBottomNavigationView,
         items,
         status,
       ];
 
-  factory TimelineState.create() => const TimelineState._(
+  factory TimelineState.create() => TimelineState._(
         selectedTab: 0,
+        day: DateTime.now().day.toString(),
+        monthKey: DateTime.now().month.toMonthKey(),
         hideBottomNavigationView: true,
-        items: [],
+        items: const [],
         status: TimelineStatus.loading,
       );
 }

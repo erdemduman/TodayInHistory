@@ -2,5 +2,11 @@
     "chooseDate": "Choose a date",
     "events": "Events",
     "births": "Births",
-    "deaths": "Deaths"
+    "deaths": "Deaths",
+    "months": "{month, select, january {January} february {February} march {March} april {April} may {May} june {June} july {July} august {August} september {September} october {October} november {November} december {December} other {January}}",
+    "@months": {
+        "placeholders": {
+            "month": {}
+        }
+  }
 }
